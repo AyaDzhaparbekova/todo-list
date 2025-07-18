@@ -1,14 +1,15 @@
-import './App.css'
+// IMPORTANT! File name should match the component name. 
 
+
+import './App.css'
+import TodoList from './TodoList';
+import TodoForm from './TodoForm';
+
+
+// The component name must be capitalized.
 function App() {
 
-  const todos=[
-  {id: 1, title: "review resources"},
-  {id: 2, title: "take notes"},
-  {id: 3, title: "code out app"}
-  ]
-
-  return (
+ return (
     <div>
       <h1>My Todos</h1>
       <ul>
