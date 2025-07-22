@@ -1,9 +1,11 @@
+import React from 'react';
+
 function TodoForm() {
   return (
     <form>
-      <label htmlFor='todoTitle'>Title</label>
+      <label htmlFor='todoTitle'>Todo</label>
       <input type='text' id='todoTitle' />
-      <button type='submit'>Submit</button>
+      <button type='submit'>Add Todo</button>
     </form>
   );
 }

@@ -1,23 +1,14 @@
-// IMPORTANT! File name should match the component name. 
-
-
-import './App.css'
-import TodoList from './TodoList';
+import './App.css';
 import TodoForm from './TodoForm';
+import TodoList from './TodoList';
 
-
-// The component name must be capitalized.
 function App() {
-
- return (
+  return (
     <div>
       <h1>My Todos</h1>
-      <ul>
-        {todos.map(todo =>
-          <li key={todo.id}>{todo.title}</li>)}
-          </ul>
+      <TodoForm />
+      <TodoList />
     </div>
-  )
+  );
 }
-
-export default App
+export default App;
