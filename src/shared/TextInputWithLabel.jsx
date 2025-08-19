@@ -1,12 +1,9 @@
 import React from 'react';
 
-const TextInputWithLabel = React.forwardRef(function TextInputWithLabel(
-  { elementId, label, value, onChange },
-  ref
-) {
+function TextInputWithLabel({ elementId, labelText, value, onChange, ref }) {
   return (
     <>
-      <label htmlFor={elementId}>{label}</label>
+      <label htmlFor={elementId}>{labelText}</label>
       <input
         type='text'
         id={elementId}
@@ -16,6 +13,6 @@ const TextInputWithLabel = React.forwardRef(function TextInputWithLabel(
       />
     </>
   );
-});
+}
 
 export default TextInputWithLabel;
