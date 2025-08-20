@@ -3,21 +3,23 @@ import TextInputWithLabel from '../../shared/TextInputWithLabel';
 
 function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
   const [isEditing, setIsEditing] = useState(false);
-
   const [workingTitle, setWorkingTitle] = useState(todo.title);
 
   function handleEdit(e) {
     setWorkingTitle(e.target.value);
   }
+
   function handleCancel() {
     setWorkingTitle(todo.title);
     setIsEditing(false);
   }
+
   function handleUpdate() {
-    const updatedTodo = { ...todo,title: workingTitle };
+    const updatedTodo = { ...todo, title: workingTitle };
     onUpdateTodo(updatedTodo);
     setIsEditing(false);
   }
+
   return (
     <li>
       <form
