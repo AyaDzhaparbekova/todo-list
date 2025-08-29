@@ -1,15 +1,20 @@
 import React from 'react';
 import TodoListItem from './TodoListItem';
 
-function TodoList({ todoList, onCompleteTodo, onUpdateTodo }) {
+function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading}) {
   const filteredTodoList = todoList.filter(todo => !todo.isCompleted);
+
+  if (isLoading) {
+    return <p>Todo list loading...</p>;
+  }
+
+  if (filteredTodoList.length === 0) {
+    return <p>Add todo above to get started</p>;
+  }
+
 
   return (
     <>
-      {filteredTodoList.length === 0 ? (
-        <p>Add todo above to get started</p>
-      ) : (
-        <ul>
           {filteredTodoList.map(todo => (
             <TodoListItem
               key={todo.id}
@@ -18,8 +23,6 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo }) {
               onUpdateTodo={onUpdateTodo}
             />
           ))}
-        </ul>
-      )}
     </>
   );
 }
