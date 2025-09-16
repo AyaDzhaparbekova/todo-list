@@ -1,7 +1,8 @@
+import styles from '../../TodoList.module.css';
 import React from 'react';
 import TodoListItem from './TodoListItem';
 
-function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading}) {
+function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
   const filteredTodoList = todoList.filter(todo => !todo.isCompleted);
 
   if (isLoading) {
@@ -12,18 +13,17 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading}) {
     return <p>Add todo above to get started</p>;
   }
 
-
   return (
-    <>
-          {filteredTodoList.map(todo => (
-            <TodoListItem
-              key={todo.id}
-              todo={todo}
-              onCompleteTodo={onCompleteTodo}
-              onUpdateTodo={onUpdateTodo}
-            />
-          ))}
-    </>
+    <ul className={styles.todoList}>
+      {filteredTodoList.map(todo => (
+        <TodoListItem
+          key={todo.id}
+          todo={todo}
+          onCompleteTodo={onCompleteTodo}
+          onUpdateTodo={onUpdateTodo}
+        />
+      ))}
+    </ul>
   );
 }
 
