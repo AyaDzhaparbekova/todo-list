@@ -1,17 +1,9 @@
-import React from 'react';
-
-function TextInputWithLabel({ elementId, labelText, value, onChange, ref }) {
+function TextInputWithLabel({ elementId, label, value, onChange }) {
   return (
-    <>
-      <label htmlFor={elementId}>{labelText}</label>
-      <input
-        type='text'
-        id={elementId}
-        ref={ref}
-        value={value}
-        onChange={onChange}
-      />
-    </>
+    <div>
+      <label htmlFor={elementId}>{label}</label>
+      <input id={elementId} type='text' value={value} onChange={onChange} />
+    </div>
   );
 }
 

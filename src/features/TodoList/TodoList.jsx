@@ -6,11 +6,11 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
   const filteredTodoList = todoList.filter(todo => !todo.isCompleted);
 
   if (isLoading) {
-    return <p>Todo list loading...</p>;
+    return <p>To do list loading...</p>;
   }
 
   if (filteredTodoList.length === 0) {
-    return <p>Add todo above to get started</p>;
+    return <p>Add to do above to get started</p>;
   }
 
   return (
