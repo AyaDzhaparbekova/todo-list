@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import styled from 'styled-components';import React, { useState } from 'react';
 import TextInputWithLabel from '../../shared/TextInputWithLabel';
 
 
+const StyledButton = styled.button`
+  font-style: ${props => (props.disabled ? '' : 'normal')};
+`;
 
 function TodoForm({ onAddTodo }) {
   const [workingTodoTitle, setWorkingTodoTitle] = useState('');
@@ -23,10 +26,10 @@ function TodoForm({ onAddTodo }) {
         value={workingTodoTitle}
         onChange={e => setWorkingTodoTitle(e.target.value)}
       />
-
-      <button type='submit' disabled={workingTodoTitle === ''}>
+      
+      <StyledButton disabled={workingTodoTitle === ''}>
         Add Todo
-      </button>
+      </StyledButton>
     </form>
   );
 }

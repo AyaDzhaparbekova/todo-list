@@ -1,4 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
+import './App.css';
+import styles from './App.module.css';
+import logo from './assets/images/logo.png';
+import './TodoList.module.css';
+import './TodoListItem.module.css';
+
+import { useCallback, useEffect, useState } from 'react';
 import TodoForm from './features/TodoList/TodoForm';
 import TodoList from './features/TodoList/TodoList';
 import TodosViewForm from './features/TodoList/TodosViewForm';
@@ -32,6 +38,7 @@ function App() {
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
+
       const options = {
         method: 'GET',
         headers: { Authorization: token },
@@ -39,7 +46,7 @@ function App() {
       try {
         const resp = await fetch(encodeUrl(), options);
         if (!resp.ok) {
-          throw new Error(resp.statusText || `HTTP ${resp.status}`);
+          throw new Error(resp.statusText || `${resp.status}`);
         }
         const { records } = await resp.json();
         const fetched = records.map(record => {
@@ -87,7 +94,7 @@ function App() {
 
     try {
       setIsSaving(true);
-      const resp = await fetch(encodeUrl(), options);
+      const resp = await fetch(url, options);
       if (!resp.ok) {
         throw new Error(resp.statusText || `HTTP ${resp.status}`);
       }
@@ -195,35 +202,34 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>My Todo App</h1>
-
-      <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
-
-      <TodoList
-        todoList={todoList}
-        isLoading={isLoading}
-        onCompleteTodo={completeTodo}
-        onUpdateTodo={updateTodo}
-      />
-      <hr />
-
-      <TodosViewForm
-        sortField={sortField}
-        setSortField={setSortField}
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-        queryString={queryString}
-        setQueryString={setQueryString}
-      />
-
-      {errorMessage && (
-        <div style={{ marginTop: 16 }}>
-          <hr />
-          <p role='alert'>Error: {errorMessage}</p>
-          <button onClick={() => setErrorMessage('')}>Dismiss</button>
-        </div>
-      )}
+    <div className={styles.appContainer}>
+      <header className={styles.header}>
+        <img src={logo} alt='logo' className={styles.logo} />
+        <h1 className={styles.title}> To Do List</h1>
+        <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
+        <TodoList
+          todoList={todoList}
+          isLoading={isLoading}
+          onCompleteTodo={completeTodo}
+          onUpdateTodo={updateTodo}
+        />
+        <hr />
+        <TodosViewForm
+          sortField={sortField}
+          setSortField={setSortField}
+          sortDirection={sortDirection}
+          setSortDirection={setSortDirection}
+          queryString={queryString}
+          setQueryString={setQueryString}
+        />
+        {errorMessage && (
+          <div className={styles.errorBox}>
+            <hr />
+            <p role='alert'>Error: {errorMessage}</p>
+            <button onClick={() => setErrorMessage('')}>Dismiss</button>
+          </div>
+        )}
+      </header>
     </div>
   );
 }
