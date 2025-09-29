@@ -1,8 +1,11 @@
-
+body {
+  background: url('../src/assets/images/background.jpg');
+ 
+}
 .appContainer {
   display: flex;
   flex-direction: column;
-  margin: 100px;
+  margin: 150px;
   
 }
 .header {
@@ -18,23 +21,4 @@
 .title {
   font-size: 1.3rem;
   font-weight: bold;
-}
-.todoList {
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-}
-
-
-.errorBox {
-  border: 1px solid rgb(11, 11, 11);
-  padding: 10px;
-  margin-top: 16px;
-  border-radius: 5px;
-  background-color: rgb(236, 234, 230);
-}
-button{
-  cursor: pointer;
-  background-color: rgb(150, 149, 147);
-color: black
 }

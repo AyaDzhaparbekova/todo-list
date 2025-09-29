@@ -22,7 +22,7 @@ function TodosViewForm({
   return (
     <form onSubmit={e => e.preventDefault()}>
       <label>
-        Search todos:
+        Search to do:
         <input
           type='text'
           value={localQueryString}

@@ -5,10 +5,9 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
   const [isEditing, setIsEditing] = useState(false);
   const [workingTitle, setWorkingTitle] = useState(todo.title);
 
-  const useEffect = (() => {
-    setWorkingTitle(todo.title); 
+  React.useEffect(() => {
+    setWorkingTitle(todo.title);
   }, [todo]);
-
 
   function handleEdit(e) {
     setWorkingTitle(e.target.value);
