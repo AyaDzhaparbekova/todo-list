@@ -2,16 +2,21 @@ import './App.css';
 import styles from './App.module.css';
 import logo from './assets/images/logo.png';
 
-import React, { useCallback, useEffect, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
+import TodosPage from './pages/TodosPage';
+import About from './pages/About';
+import NotFound from './pages/NotFound';
+import Header from './shared/Header';
+
+
+
 import {
   initialState as initialTodosState,
   actions as todoActions,
   reducer as todosReducer,
 } from './reducers/todos.reducer';
-
-import TodoForm from './features/TodoList/TodoForm';
-import TodoList from './features/TodoList/TodoList';
-import TodosViewForm from './features/TodoList/TodosViewForm';
 
 const urlBase = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${
   import.meta.env.VITE_TABLE_NAME
@@ -22,24 +27,21 @@ function App() {
   const [todoState, dispatch] = useReducer(todosReducer, initialTodosState);
   const { todoList, isLoading, isSaving, errorMessage } = todoState;
 
-  const [sortField, setSortField] = React.useState('createdTime');
-  const [sortDirection, setSortDirection] = React.useState('desc');
-  const [queryString, setQueryString] = React.useState('');
+  const [sortField, setSortField] = useState('createdTime');
+  const [sortDirection, setSortDirection] = useState('desc');
+  const [queryString, setQueryString] = useState('');
 
   const buildUrl = useCallback(() => {
     let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
     let searchQuery = '';
-
     if (queryString) {
       searchQuery = `&filterByFormula=SEARCH("${queryString}", title)`;
     }
-
     return encodeURI(`${urlBase}?${sortQuery}${searchQuery}`);
   }, [sortField, sortDirection, queryString]);
 
   useEffect(() => {
     let cancelled = false;
-
     async function fetchTodos() {
       dispatch({ type: todoActions.fetchTodos });
       try {
@@ -61,9 +63,7 @@ function App() {
         }
       }
     }
-
     fetchTodos();
-
     return () => {
       cancelled = true;
     };
@@ -84,11 +84,10 @@ function App() {
         body: JSON.stringify(payload),
       });
       if (!resp.ok) {
-        console.log('addTodo: response json:', { records });
-
         throw new Error(resp.statusText || `HTTP ${resp.status}`);
       }
-      const { records } = await resp.json();
+      const json = await resp.json();
+      const { records } = json;
       dispatch({ type: todoActions.addTodo, record: records[0] });
     } catch (err) {
       dispatch({ type: todoActions.setLoadError, error: err });
@@ -101,11 +100,9 @@ function App() {
     const previousTodos = todoList;
     dispatch({ type: todoActions.startRequest });
     dispatch({ type: todoActions.completeTodo, id });
-
     const payload = {
       records: [{ id, fields: { isCompleted: true } }],
     };
-
     try {
       const resp = await fetch(urlBase, {
         method: 'PATCH',
@@ -118,7 +115,6 @@ function App() {
       if (!resp.ok) {
         throw new Error(resp.statusText || `HTTP ${resp.status}`);
       }
-    
     } catch (err) {
       dispatch({ type: todoActions.revertTodo, previousTodos });
       dispatch({ type: todoActions.setLoadError, error: err });
@@ -131,7 +127,6 @@ function App() {
     const previousTodos = todoList;
     dispatch({ type: todoActions.startRequest });
     dispatch({ type: todoActions.updateTodo, editedTodo });
-
     const payload = {
       records: [
         {
@@ -143,7 +138,6 @@ function App() {
         },
       ],
     };
-
     try {
       const resp = await fetch(urlBase, {
         method: 'PATCH',
@@ -164,42 +158,43 @@ function App() {
     }
   }
 
+  function dismissError() {
+    dispatch({ type: todoActions.clearError });
+  }
+
   return (
     <div className={styles.appContainer}>
+      <Header title='' />
       <header className={styles.header}>
         <img src={logo} alt='logo' className={styles.logo} />
         <h1 className={styles.title}>To Do List</h1>
-
-        <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
-
-        <TodoList
-          todoList={todoList}
-          isLoading={isLoading}
-          onCompleteTodo={completeTodo}
-          onUpdateTodo={updateTodo}
-        />
-
-        <hr />
-
-        <TodosViewForm
-          sortField={sortField}
-          setSortField={setSortField}
-          sortDirection={sortDirection}
-          setSortDirection={setSortDirection}
-          queryString={queryString}
-          setQueryString={setQueryString}
-        />
-
-        {errorMessage && (
-          <div className={styles.errorBox}>
-            <hr />
-            <p role='alert'>Error: {errorMessage}</p>
-            <button onClick={() => dispatch({ type: todoActions.clearError })}>
-              Dismiss
-            </button>
-          </div>
-        )}
       </header>
+
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <TodosPage
+              todoList={todoList}
+              isLoading={isLoading}
+              isSaving={isSaving}
+              errorMessage={errorMessage}
+              onAddTodo={addTodo}
+              onCompleteTodo={completeTodo}
+              onUpdateTodo={updateTodo}
+              sortField={sortField}
+              setSortField={setSortField}
+              sortDirection={sortDirection}
+              setSortDirection={setSortDirection}
+              queryString={queryString}
+              setQueryString={setQueryString}
+              onDismissError={dismissError}
+            />
+          }
+        />
+        <Route path='/about' element={<About />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
     </div>
   );
 }

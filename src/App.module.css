@@ -1,21 +1,18 @@
 body {
   background: url('../src/assets/images/background.jpg');
- 
 }
 .appContainer {
-  display: flex;
   flex-direction: column;
   margin: 150px;
-  
 }
 .header {
-  justify-content: center; 
-  gap: 5px; 
+  justify-content: center;
+  gap: 5px;
   margin-bottom: 60px;
 }
 .logo {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
 }
 
 .title {
